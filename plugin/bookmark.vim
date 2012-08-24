@@ -15,7 +15,7 @@ if !exists('g:simple_bookmarks_storage_by_file')
 endif
 
 if !exists('g:simple_bookmarks_filename')
-  let g:simple_bookmarks_filename = '~/.vim_bookmarks'
+  let g:simple_bookmarks_filename = '~/.vim_librarian'
 endif
 
 if !exists('g:simple_bookmarks_long_quickfix')

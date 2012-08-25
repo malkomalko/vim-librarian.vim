@@ -33,23 +33,27 @@ endfunction
 
 " Go to the user-chosen bookmark
 function! simple_bookmarks#Go(name)
-  let names = split(system("cat " . g:simple_bookmarks_filename .
-    \" 2>/dev/null | cut -f1 | sort -u"), "\n")
-
-  let has_name = index(names, a:name) >= 0
+  let has_name = s:HasBookmarkNamed(a:name)
   if !has_name
     echo "No bookmarks found for " . a:name
     return
   endif
 
-  call s:ReadBookmarks()
-  call filter(g:simple_bookmarks_storage, 'split(v:key, ":")[0] == a:name')
+  call s:ReadFilteredBookmarks(a:name)
   call s:ShowBookmarksInQuickfix()
 endfunction
 
 " Close all buffers and open all bookmarks
 function! simple_bookmarks#Open(name)
+  let has_name = s:HasBookmarkNamed(a:name)
+  if !has_name
+    echo "No bookmarks found for " . a:name
+    return
+  endif
+
   call s:CloseAllBuffers()
+  call s:ReadFilteredBookmarks(a:name)
+  call s:OpenAllBuffers()
 endfunction
 
 " Open all bookmarks in the quickfix window
@@ -168,6 +172,27 @@ function! s:WriteBookmarks()
   endfor
 
   call writefile(records, bookmarks_file)
+endfunction
+
+function! s:ReadFilteredBookmarks(name)
+  call s:ReadBookmarks()
+  call filter(g:simple_bookmarks_storage, 'split(v:key, ":")[0] == a:name')
+endfunction
+
+function! s:HasBookmarkNamed(name)
+  let names = split(system("cat " . g:simple_bookmarks_filename .
+    \" 2>/dev/null | cut -f1 | sort -u"), "\n")
+  return index(names, a:name) >= 0
+endfunction
+
+function! s:OpenAllBuffers()
+  for [name, place] in items(g:simple_bookmarks_storage)
+    let [filename, cursor, line] = place
+
+    silent! exe 'edit '.filename
+    silent! call setpos('.', cursor)
+    silent! normal! zo
+  endfor
 endfunction
 
 function! s:CloseAllBuffers()

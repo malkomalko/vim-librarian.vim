@@ -35,11 +35,21 @@ endfunction
 function! simple_bookmarks#Go(name)
   let names = split(system("cat " . g:simple_bookmarks_filename .
     \" 2>/dev/null | cut -f1 | sort -u"), "\n")
+
   let has_name = index(names, a:name) >= 0
+  if !has_name
+    echo "No bookmarks found for " . a:name
+    return
+  endif
 
   call s:ReadBookmarks()
   call filter(g:simple_bookmarks_storage, 'split(v:key, ":")[0] == a:name')
   call s:ShowBookmarksInQuickfix()
+endfunction
+
+" Close all buffers and open all bookmarks
+function! simple_bookmarks#Open(name)
+  call s:CloseAllBuffers()
 endfunction
 
 " Open all bookmarks in the quickfix window
@@ -158,4 +168,13 @@ function! s:WriteBookmarks()
   endfor
 
   call writefile(records, bookmarks_file)
+endfunction
+
+function! s:CloseAllBuffers()
+  :wa!
+  for b in range(1, bufnr('$'))
+    if (bufloaded(b))
+      exe 'bd ' . b
+    endif
+  endfor
 endfunction

@@ -4,10 +4,11 @@ function! simple_bookmarks#Add(name)
   let file   = expand('%:p')
   let cursor = getpos('.')
   let line   = substitute(getline('.'), '\v(^\s+)|(\s+$)', '', 'g')
+  let name   = a:name.':'.file.':'.cursor[1]
 
   if file != ''
     call s:ReadBookmarks()
-    let g:simple_bookmarks_storage[a:name] = [file, cursor, line]
+    let g:simple_bookmarks_storage[name] = [file, cursor, line]
     call s:WriteBookmarks()
   else
     echom "No file"
@@ -113,10 +114,10 @@ function! s:ReadBookmarks()
   for line in readfile(bookmarks_file)
     let parts = split(line, "\t")
 
-    let name   = parts[0]
     let file   = parts[1]
     let cursor = split(parts[2], ':')
     let line   = get(parts, 3, '')
+    let name   = parts[0].':'.parts[1].':'.cursor[1]
 
     let bookmarks[name] = [file, cursor, line]
 
@@ -142,6 +143,7 @@ function! s:WriteBookmarks()
     let [filename, cursor, line] = place
     let line                     = substitute(line, "\t", ' ', 'g') " avoid possible delimiter problems
     let cursor_description       = join(cursor, ':')
+    let name                     = split(name, ':')[0]
     let record                   = join([name, filename, cursor_description, line], "\t")
 
     call add(records, record)

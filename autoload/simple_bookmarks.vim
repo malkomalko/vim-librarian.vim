@@ -33,22 +33,49 @@ endfunction
 
 " Go to the user-chosen bookmark
 function! simple_bookmarks#Go(name)
+  let names = split(system("cat " . g:simple_bookmarks_filename .
+    \" 2>/dev/null | cut -f1 | sort -u"), "\n")
+  let has_name = index(names, a:name) >= 0
+
   call s:ReadBookmarks()
-
-  if !has_key(g:simple_bookmarks_storage, a:name)
-    return
-  endif
-
-  let [filename, cursor, _line] = g:simple_bookmarks_storage[a:name]
-
-  exe 'edit '.filename
-  call setpos('.', cursor)
-  silent! normal! zo
+  call filter(g:simple_bookmarks_storage, 'split(v:key, ":")[0] == a:name')
+  call s:ShowBookmarksInQuickfix()
 endfunction
 
 " Open all bookmarks in the quickfix window
 function! simple_bookmarks#Copen()
   call s:ReadBookmarks()
+  call s:ShowBookmarksInQuickfix()
+endfunction
+
+" Completion function for choosing bookmarks
+function! simple_bookmarks#BookmarkNames(A, L, P)
+  let names = system("cat " . g:simple_bookmarks_filename .
+    \" 2>/dev/null | cut -f1 | sort -u")
+  return names
+endfunction
+
+function! simple_bookmarks#Highlight()
+  call s:ReadBookmarks()
+
+  if empty(g:simple_bookmarks_storage_by_file)
+    return
+  endif
+
+  for entry in get(g:simple_bookmarks_storage_by_file, expand('%:p'), [])
+    let line = entry[1]
+
+    if g:simple_bookmarks_signs
+      exe 'sign place '.line.' line='.line.' name=bookmark file='.expand('%:p')
+    endif
+
+    if g:simple_bookmarks_highlight
+      exe 'syntax match SimpleBookmark /^.*\%'.line.'l.*$/'
+    endif
+  endfor
+endfunction
+
+function! s:ShowBookmarksInQuickfix()
   let choices = []
 
   for [name, place] in items(g:simple_bookmarks_storage)
@@ -81,33 +108,6 @@ function! simple_bookmarks#Copen()
 
   call setqflist(choices)
   copen
-endfunction
-
-" Completion function for choosing bookmarks
-function! simple_bookmarks#BookmarkNames(A, L, P)
-  let names = system("cat " . g:simple_bookmarks_filename .
-    \" 2>/dev/null | cut -f1 | sort -u")
-  return names
-endfunction
-
-function! simple_bookmarks#Highlight()
-  call s:ReadBookmarks()
-
-  if empty(g:simple_bookmarks_storage_by_file)
-    return
-  endif
-
-  for entry in get(g:simple_bookmarks_storage_by_file, expand('%:p'), [])
-    let line = entry[1]
-
-    if g:simple_bookmarks_signs
-      exe 'sign place '.line.' line='.line.' name=bookmark file='.expand('%:p')
-    endif
-
-    if g:simple_bookmarks_highlight
-      exe 'syntax match SimpleBookmark /^.*\%'.line.'l.*$/'
-    endif
-  endfor
 endfunction
 
 function! s:ReadBookmarks()

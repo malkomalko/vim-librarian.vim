@@ -204,6 +204,15 @@ function! s:CloseAllBuffers()
   endfor
 endfunction
 
+function! s:UpdateBookmarks()
+
+endfunction
+
+function! s:ParseChanges(message)
+
+endfunction
+
 augroup simpleBookmarksPluginAuto
   autocmd!
+  au BufWritePre * call s:UpdateBookmarks()
 augroup END

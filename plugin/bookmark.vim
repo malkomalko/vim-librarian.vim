@@ -23,7 +23,7 @@ if !exists('g:simple_bookmarks_long_quickfix')
 endif
 
 if !exists('g:simple_bookmarks_signs')
-  let g:simple_bookmarks_signs = 0
+  let g:simple_bookmarks_signs = 1
 endif
 
 if !exists('g:simple_bookmarks_highlight')

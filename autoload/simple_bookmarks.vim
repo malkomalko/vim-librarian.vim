@@ -17,12 +17,16 @@ endfunction
 
 " Delete the user-chosen bookmark
 function! simple_bookmarks#Del(name)
+  let file   = expand('%:p')
+  let cursor = getpos('.')
+  let name   = a:name.':'.file.':'.cursor[1]
+
   call s:ReadBookmarks()
 
-  if !has_key(g:simple_bookmarks_storage, a:name)
+  if !has_key(g:simple_bookmarks_storage, name)
     return
   endif
-  call remove(g:simple_bookmarks_storage, a:name)
+  call remove(g:simple_bookmarks_storage, name)
 
   call s:WriteBookmarks()
 endfunction

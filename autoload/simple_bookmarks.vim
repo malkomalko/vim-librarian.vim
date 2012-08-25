@@ -203,3 +203,7 @@ function! s:CloseAllBuffers()
     endif
   endfor
 endfunction
+
+augroup simpleBookmarksPluginAuto
+  autocmd!
+augroup END

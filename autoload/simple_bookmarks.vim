@@ -93,7 +93,7 @@ function! s:ShowBookmarksInQuickfix()
             \ 'col':      cursor[2]
             \ })
       call add(choices, {
-            \ 'text': trimmed_line
+            \ 'text': line
             \ })
     else
       " place the line next to the bookmark name

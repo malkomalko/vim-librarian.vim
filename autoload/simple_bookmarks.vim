@@ -54,7 +54,8 @@ function! simple_bookmarks#Copen()
   for [name, place] in items(g:simple_bookmarks_storage)
     let [filename, cursor, line] = place
     let bookmark_name = split(name, ':')[0]
-    let trimmed_line  = strpart(line, 0, 40) . '...'
+    let dots = strlen(line) > 40 ? '...' : ''
+    let trimmed_line = strpart(line, 0, 40) . dots
 
     if g:simple_bookmarks_long_quickfix
       " then place the line on its own below

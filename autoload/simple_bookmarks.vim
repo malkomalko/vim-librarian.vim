@@ -78,8 +78,9 @@ endfunction
 
 " Completion function for choosing bookmarks
 function! simple_bookmarks#BookmarkNames(A, L, P)
-  call s:ReadBookmarks()
-  return join(sort(keys(g:simple_bookmarks_storage)), "\n")
+  let names = system("cat " . g:simple_bookmarks_filename .
+    \" 2>/dev/null | cut -f1 | sort -u")
+  return names
 endfunction
 
 function! simple_bookmarks#Highlight()

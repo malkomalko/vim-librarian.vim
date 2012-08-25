@@ -53,22 +53,24 @@ function! simple_bookmarks#Copen()
 
   for [name, place] in items(g:simple_bookmarks_storage)
     let [filename, cursor, line] = place
+    let bookmark_name = split(name, ':')[0]
+    let trimmed_line  = strpart(line, 0, 40) . '...'
 
     if g:simple_bookmarks_long_quickfix
       " then place the line on its own below
       call add(choices, {
-            \ 'text':     name,
+            \ 'text':     bookmark_name,
             \ 'filename': filename,
             \ 'lnum':     cursor[1],
             \ 'col':      cursor[2]
             \ })
       call add(choices, {
-            \ 'text': line
+            \ 'text': trimmed_line
             \ })
     else
       " place the line next to the bookmark name
       call add(choices, {
-            \ 'text':     name.' | '.line,
+            \ 'text':     bookmark_name .' | ' . trimmed_line,
             \ 'filename': filename,
             \ 'lnum':     cursor[1],
             \ 'col':      cursor[2]

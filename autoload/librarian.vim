@@ -176,7 +176,7 @@ endfunction
 
 function! s:ReadFilteredBookmarks(name)
   call s:ReadBookmarks()
-  call filter(g:librarian_storage, 'split(v:key, ":")[0] == a:name')
+  call filter(g:librarian_storage, 'split(v:key, ":")[0] ==# a:name')
 endfunction
 
 function! s:HasBookmarkNamed(name)

@@ -1,31 +1,53 @@
-The plugin provides several commands to manage named bookmarks. This is
-similar to what you'd do with persistent marks, but brings the benefit of
-longer, more rememberable names.
+==============================================================================
+INSTALLATION                                   *librarian-installation*
 
-Here's an example:
+There are several ways to install the plugin. The recommended one is by using
+Tim Pope's pathogen (http://www.vim.org/scripts/script.php?script_id=2332). In
+that case, you can clone the plugin's git repository like so:
+>
+    git clone git://github.com/malkomalko/vim-librarian.vim.git ~/.vim/bundle/librarian
+<
+If your vim configuration is under git version control, you could also set up
+the repository as a submodule, which would allow you to update more easily.
+The command is (provided you're in ~/.vim):
+>
+    git submodule add git://github.com/malkomalko/vim-librarian.vim.git bundle/librarian
+<
+Another way is to simply copy all the essential directories inside the ~/.vim
+directory: plugin, autoload, doc.
 
-``` vim
-:edit ~/.vimrc
-:3
-:Bookmark here
-```
+Thanks to AndrewRadev's https://github.com/AndrewRadev/simple_bookmarks.vim
+which this is a fork of.
 
-This will store a bookmark called "here" in the file `~/.vim_bookmarks` (changeable through a setting). To jump to the mark, use `:GotoBookmark`
+==============================================================================
+USAGE                                                 *librarian-usage*
 
-``` vim
-:GotoBookmark here
-```
+The |:VLBookmark| command accepts a name to store the bookmark. It will save the
+current file and the cursor position to ~/.vim_librarian (by default).
 
-This will open the `~/.vimrc` file and jump to the third line. The column is saved as well.
+This plugin differs from Andrew's simple_bookmarks in that you may bookmark
+multiple locations with the same bookmark name, allowing for you to restore
+sets of bookmarks.
 
-To delete the bookmark, use:
+Once you have some bookmarks in place, you may open them in a few different
+ways.
 
-``` vim
-:DelBookmark here
-```
+|:VLOpenBookmarks| <bookmark> will save and close all open buffers and then
+open up every file for <bookmark> giving you a clean slate to edit the part
+of the application you like.
 
-Both `:GotoBookmark` and `:DelBookmark` are tab-completed with all known bookmarks.
+|VLQFOpenBookmarksFor| <bookmark> will open a quickfix window with the
+bookmarks allowing you jump to a bookmark manually.
 
-The command `:CopenBookmarks` will load all marks in the quickfix window for easier navigating.
+|VLQFOpenBookmarks| will open up all your bookmarks in a quickfix window.
 
-Note that bookmarks should be synchronized between vim instances. Anytime you add a mark in one vim instance, it should be available in all others. In practice, this is achieved by simply reading and writing the whole file on each update. I have yet to experiment to find out if there are any performance issues or race conditions. If you find any issues, please open a bug report in [the bugtracker](https://github.com/AndrewRadev/simple_bookmarks.vim/issues).
+Note: all commands accepting a <bookmark> name can be tab completed.
+
+To delete a mark, highlight the bookmarked line and use |:VLDelBookmark|.
+It accepts the name of the mark, which is tab-completed.
+
+Note that bookmarks should be synchronized between vim instances. Anytime you
+add a mark in one vim instance, it should be available in all others. In
+practice, this is achieved by simply reading and writing the whole file on
+each update. I have yet to experiment to find out if there are any performance
+issues or race conditions.

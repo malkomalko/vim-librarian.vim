@@ -30,11 +30,11 @@ if !exists('g:librarian_highlight')
   let g:librarian_highlight = 0
 endif
 
-command! -nargs=1 -complete=custom,librarian#BookmarkNames Bookmark call librarian#Add(<f-args>)
-command! -nargs=1 -complete=custom,librarian#BookmarkNames DelBookmark call librarian#Del(<f-args>)
-command! -nargs=1 -complete=custom,librarian#BookmarkNames OpenBookmarks call librarian#Open(<f-args>)
-command! -nargs=1 -complete=custom,librarian#BookmarkNames CopenBookmarksFor call librarian#Go(<f-args>)
-command! CopenBookmarks call librarian#Copen()
+command! -nargs=1 -complete=custom,librarian#BookmarkNames VLBookmark call librarian#Add(<f-args>)
+command! -nargs=1 -complete=custom,librarian#BookmarkNames VLDelBookmark call librarian#Del(<f-args>)
+command! -nargs=1 -complete=custom,librarian#BookmarkNames VLOpenBookmarks call librarian#Open(<f-args>)
+command! -nargs=1 -complete=custom,librarian#BookmarkNames VLQFOpenBookmarksFor call librarian#Go(<f-args>)
+command! VLQFOpenBookmarks call librarian#Copen()
 
 hi link Librarian Search
 

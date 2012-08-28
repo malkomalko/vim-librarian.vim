@@ -29,7 +29,8 @@ sets of bookmarks.
     :VLBookmark *bookmark*
 
 command accepts a name to store the bookmark. It will save the
-current file and the cursor position to ~/.vim_librarian (by default).
+current file and the cursor position to .vim_librarian in your current working
+directory if it can find a .git folder OR ~/.vim_librarian.
 
 * * *
 

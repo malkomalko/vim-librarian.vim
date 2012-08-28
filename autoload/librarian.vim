@@ -203,16 +203,3 @@ function! s:CloseAllBuffers()
     endif
   endfor
 endfunction
-
-function! s:UpdateBookmarks()
-
-endfunction
-
-function! s:ParseChanges(message)
-
-endfunction
-
-augroup librarianPluginAuto
-  autocmd!
-  au BufWritePre * call s:UpdateBookmarks()
-augroup END

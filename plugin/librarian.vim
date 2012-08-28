@@ -15,7 +15,13 @@ if !exists('g:librarian_storage_by_file')
 endif
 
 if !exists('g:librarian_filename')
-  let g:librarian_filename = '~/.vim_librarian'
+  let is_a_git_project = isdirectory(getcwd() . "/.git")
+
+  if is_a_git_project
+    let g:librarian_filename = '~/.vim_librarian'
+  else
+    let g:librarian_filename = getcwd() . '/.vim_librarian'
+  endif
 endif
 
 if !exists('g:librarian_long_quickfix')

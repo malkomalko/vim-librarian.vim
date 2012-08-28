@@ -26,34 +26,34 @@ sets of bookmarks.
 
 * * *
 
-###:VLBookmark *bookmark*
+    :VLBookmark *bookmark*
 
 command accepts a name to store the bookmark. It will save the
 current file and the cursor position to ~/.vim_librarian (by default).
 
 * * *
 
-###:VLOpenBookmarks *bookmark*
+    :VLOpenBookmarks *bookmark*
 
 will save and close all open buffers and then open up every file for <bookmark>
 giving you a clean slate to edit the part of the application you like.
 
 * * *
 
-###:VLQFOpenBookmarksFor *bookmark*
+    :VLQFOpenBookmarksFor *bookmark*
 
 will open a quickfix window with the bookmarks allowing you
 jump to a bookmark manually.
 
 * * *
 
-###:VLQFOpenBookmarks
+    :VLQFOpenBookmarks
 
 will open up all your bookmarks in a quickfix window.
 
 * * *
 
-###:VLDelBookmark *bookmark*
+    :VLDelBookmark *bookmark*
 
 highlight the current bookmarked line and type in this tab to remove it from
 the library.
@@ -67,3 +67,14 @@ add a mark in one vim instance, it should be available in all others. In
 practice, this is achieved by simply reading and writing the whole file on
 each update. I have yet to experiment to find out if there are any performance
 issues or race conditions.
+
+# SUGGESTED MAPPINGS
+
+    nnoremap <leader>ka :VLBookmark<space>                                          
+    nnoremap <leader>kd :VLDelBookmark<space>                                       
+    nnoremap <leader>ke :execute "split" g:librarian_filename<cr>                   
+    nnoremap <leader>kf :VLQFOpenBookmarksFor<space>                                
+    nnoremap <leader>kl :VLQFOpenBookmarks<cr>                                      
+    nnoremap <leader>ko :VLOpenBookmarks<space>
+
+have fun :D
